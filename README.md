@@ -6,6 +6,8 @@ It is safe by default. Out of the box it makes no API calls that change anything
 
 ## How it works
 
+![n8n Outbound Domain Blacklist and RBL Reputation Monitor Workflow](assets/workflow-overview.png)
+
 ```
 Schedule (every 6h) ─┐
                      ├─> Load Config ─> DNS Lookup ─> Evaluate Listings ─> Execute Pauses ─> Audit Report ─> Needs Attention?
