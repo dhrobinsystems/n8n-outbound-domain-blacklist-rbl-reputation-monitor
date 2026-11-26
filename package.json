@@ -1,0 +1,30 @@
+{
+  "name": "n8n-outbound-domain-blacklist-rbl-reputation-monitor",
+  "version": "1.0.0",
+  "description": "n8n workflow that checks sending domains and dedicated IPs against DNS blacklists every 6 hours and auto-pauses matching Smartlead and Instantly campaigns. Dry-run by default.",
+  "license": "MIT",
+  "author": "dhRobin Systems",
+  "private": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "n8n",
+    "rbl",
+    "dnsbl",
+    "email-deliverability",
+    "smartlead",
+    "instantly",
+    "outbound"
+  ],
+  "scripts": {
+    "test": "node --test test/core.test.js test/scenarios.test.js",
+    "build": "node scripts/build-workflow.js",
+    "check": "node scripts/build-workflow.js --check",
+    "simulate": "node mirror-cli.js --scenario fixtures/scenarios/listed-domain.json",
+    "simulate:all": "node mirror-cli.js --all",
+    "simulate:live-mock": "node mirror-cli.js --scenario fixtures/scenarios/listed-ip-live-mock.json",
+    "simulate:dns-failure": "node mirror-cli.js --scenario fixtures/scenarios/dns-timeouts.json",
+    "dns:check": "node mirror-cli.js --dns live --env-file .env"
+  }
+}

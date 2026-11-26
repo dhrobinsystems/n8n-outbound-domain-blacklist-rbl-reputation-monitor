@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+
+# Local test and simulation output
+out/
+.state/
+coverage/
+*.log
+
+# Temporary and OS files
+tmp/
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
