@@ -1,0 +1,41 @@
+{
+  "name": "clean",
+  "description": "Every zone answers NXDOMAIN. Nothing is listed, nothing is paused.",
+  "env": {
+    "DRY_RUN": "true",
+    "SANDBOX_MODE": "true",
+    "MONITORED_DOMAINS": "send-1.outbound-pool.example,send-2.outbound-pool.example",
+    "MONITORED_IPS": "192.0.2.10,198.51.100.20",
+    "CAMPAIGN_MAP": {
+      "send-1.outbound-pool.example": {
+        "smartlead": [
+          "zzz_TEST_sl_1001"
+        ],
+        "instantly": [
+          "zzz_TEST_inst_2001"
+        ]
+      },
+      "192.0.2.10": {
+        "smartlead": [
+          "zzz_TEST_sl_1002",
+          "zzz_TEST_sl_1001"
+        ],
+        "instantly": [
+          "zzz_TEST_inst_2002"
+        ]
+      }
+    }
+  },
+  "dnsDefault": "ENOTFOUND",
+  "expect": {
+    "mode": "DRY_RUN",
+    "verdicts": {
+      "send-1.outbound-pool.example": "clean",
+      "send-2.outbound-pool.example": "clean",
+      "192.0.2.10": "clean",
+      "198.51.100.20": "clean"
+    },
+    "actions": {},
+    "httpCalls": 0
+  }
+}

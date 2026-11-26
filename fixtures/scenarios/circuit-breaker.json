@@ -1,0 +1,60 @@
+{
+  "name": "circuit-breaker",
+  "description": "Three domains list at once but MAX_PAUSES_PER_RUN is 2, so every pause is blocked.",
+  "env": {
+    "DRY_RUN": "false",
+    "SANDBOX_MODE": "false",
+    "HTTP_RETRY_BASE_MS": "10",
+    "SMARTLEAD_API_KEY": "zzz_TEST_not_a_real_smartlead_key",
+    "INSTANTLY_API_KEY": "zzz_TEST_not_a_real_instantly_key",
+    "MAX_PAUSES_PER_RUN": "2",
+    "MONITORED_DOMAINS": "send-1.outbound-pool.example,send-2.outbound-pool.example,send-3.outbound-pool.example",
+    "CAMPAIGN_MAP": {
+      "send-1.outbound-pool.example": {
+        "smartlead": [
+          "zzz_TEST_sl_1001"
+        ]
+      },
+      "send-2.outbound-pool.example": {
+        "smartlead": [
+          "zzz_TEST_sl_1002"
+        ]
+      },
+      "send-3.outbound-pool.example": {
+        "smartlead": [
+          "zzz_TEST_sl_1003"
+        ]
+      }
+    }
+  },
+  "dns": {
+    "send-1.outbound-pool.example.dbl.spamhaus.org": [
+      "127.0.1.2"
+    ],
+    "send-2.outbound-pool.example.dbl.spamhaus.org": [
+      "127.0.1.2"
+    ],
+    "send-3.outbound-pool.example.dbl.spamhaus.org": [
+      "127.0.1.2"
+    ]
+  },
+  "dnsDefault": "ENOTFOUND",
+  "expect": {
+    "mode": "LIVE",
+    "verdicts": {
+      "send-1.outbound-pool.example": "listed",
+      "send-2.outbound-pool.example": "listed",
+      "send-3.outbound-pool.example": "listed"
+    },
+    "actions": {
+      "smartlead:zzz_TEST_sl_1001": "blocked_circuit_breaker",
+      "smartlead:zzz_TEST_sl_1002": "blocked_circuit_breaker",
+      "smartlead:zzz_TEST_sl_1003": "blocked_circuit_breaker"
+    },
+    "httpCalls": 0,
+    "summary": {
+      "blocked": 3,
+      "paused": 0
+    }
+  }
+}

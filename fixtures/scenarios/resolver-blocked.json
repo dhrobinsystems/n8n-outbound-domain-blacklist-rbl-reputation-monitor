@@ -1,0 +1,49 @@
+{
+  "name": "resolver-blocked",
+  "description": "The RBL answers a control code (resolver refused). It is treated as an error, not a listing.",
+  "env": {
+    "DRY_RUN": "false",
+    "SANDBOX_MODE": "false",
+    "MONITORED_DOMAINS": "send-1.outbound-pool.example,send-2.outbound-pool.example",
+    "MONITORED_IPS": "192.0.2.10,198.51.100.20",
+    "CAMPAIGN_MAP": {
+      "send-1.outbound-pool.example": {
+        "smartlead": [
+          "zzz_TEST_sl_1001"
+        ],
+        "instantly": [
+          "zzz_TEST_inst_2001"
+        ]
+      },
+      "192.0.2.10": {
+        "smartlead": [
+          "zzz_TEST_sl_1002",
+          "zzz_TEST_sl_1001"
+        ],
+        "instantly": [
+          "zzz_TEST_inst_2002"
+        ]
+      }
+    },
+    "HTTP_RETRY_BASE_MS": "10",
+    "SMARTLEAD_API_KEY": "zzz_TEST_not_a_real_smartlead_key",
+    "INSTANTLY_API_KEY": "zzz_TEST_not_a_real_instantly_key"
+  },
+  "dns": {
+    "10.2.0.192.zen.spamhaus.org": [
+      "127.255.255.254"
+    ]
+  },
+  "dnsDefault": "ENOTFOUND",
+  "expect": {
+    "mode": "LIVE",
+    "verdicts": {
+      "send-1.outbound-pool.example": "clean",
+      "send-2.outbound-pool.example": "clean",
+      "192.0.2.10": "clean_partial",
+      "198.51.100.20": "clean"
+    },
+    "actions": {},
+    "httpCalls": 0
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "name": "listed-ip-live-mock",
+  "description": "Live mode against MOCK http. Covers dedupe, a 429 then success retry, and a persistent 500 failure.",
+  "env": {
+    "DRY_RUN": "false",
+    "SANDBOX_MODE": "false",
+    "MONITORED_DOMAINS": "send-1.outbound-pool.example,send-2.outbound-pool.example",
+    "MONITORED_IPS": "192.0.2.10,198.51.100.20",
+    "CAMPAIGN_MAP": {
+      "send-1.outbound-pool.example": {
+        "smartlead": [
+          "zzz_TEST_sl_1001"
+        ],
+        "instantly": [
+          "zzz_TEST_inst_2001"
+        ]
+      },
+      "192.0.2.10": {
+        "smartlead": [
+          "zzz_TEST_sl_1002",
+          "zzz_TEST_sl_1001"
+        ],
+        "instantly": [
+          "zzz_TEST_inst_2002"
+        ]
+      }
+    },
+    "HTTP_RETRY_BASE_MS": "10",
+    "SMARTLEAD_API_KEY": "zzz_TEST_not_a_real_smartlead_key",
+    "INSTANTLY_API_KEY": "zzz_TEST_not_a_real_instantly_key"
+  },
+  "dns": {
+    "10.2.0.192.zen.spamhaus.org": [
+      "127.0.0.2"
+    ],
+    "10.2.0.192.b.barracudacentral.org": [
+      "127.0.0.2"
+    ],
+    "send-1.outbound-pool.example.dbl.spamhaus.org": [
+      "127.0.1.2"
+    ]
+  },
+  "dnsDefault": "ENOTFOUND",
+  "http": {
+    "smartlead:zzz_TEST_sl_1001": [
+      429,
+      200
+    ],
+    "instantly:zzz_TEST_inst_2001": [
+      200
+    ],
+    "smartlead:zzz_TEST_sl_1002": [
+      500
+    ],
+    "instantly:zzz_TEST_inst_2002": [
+      200
+    ]
+  },
+  "expect": {
+    "mode": "LIVE",
+    "verdicts": {
+      "send-1.outbound-pool.example": "listed",
+      "send-2.outbound-pool.example": "clean",
+      "192.0.2.10": "listed",
+      "198.51.100.20": "clean"
+    },
+    "actions": {
+      "smartlead:zzz_TEST_sl_1001": "paused",
+      "instantly:zzz_TEST_inst_2001": "paused",
+      "smartlead:zzz_TEST_sl_1002": "failed",
+      "instantly:zzz_TEST_inst_2002": "paused"
+    },
+    "attempts": {
+      "smartlead:zzz_TEST_sl_1001": 2,
+      "smartlead:zzz_TEST_sl_1002": 4
+    },
+    "httpCalls": 8,
+    "summary": {
+      "paused": 3,
+      "failed": 1,
+      "needsAttention": true
+    }
+  }
+}

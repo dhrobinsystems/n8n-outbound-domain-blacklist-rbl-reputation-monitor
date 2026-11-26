@@ -1,0 +1,48 @@
+{
+  "name": "dns-timeouts",
+  "description": "Every lookup times out while in LIVE mode. Verdicts are unknown and nothing is paused.",
+  "env": {
+    "DRY_RUN": "false",
+    "SANDBOX_MODE": "false",
+    "MONITORED_DOMAINS": "send-1.outbound-pool.example,send-2.outbound-pool.example",
+    "MONITORED_IPS": "192.0.2.10,198.51.100.20",
+    "CAMPAIGN_MAP": {
+      "send-1.outbound-pool.example": {
+        "smartlead": [
+          "zzz_TEST_sl_1001"
+        ],
+        "instantly": [
+          "zzz_TEST_inst_2001"
+        ]
+      },
+      "192.0.2.10": {
+        "smartlead": [
+          "zzz_TEST_sl_1002",
+          "zzz_TEST_sl_1001"
+        ],
+        "instantly": [
+          "zzz_TEST_inst_2002"
+        ]
+      }
+    },
+    "HTTP_RETRY_BASE_MS": "10",
+    "SMARTLEAD_API_KEY": "zzz_TEST_not_a_real_smartlead_key",
+    "INSTANTLY_API_KEY": "zzz_TEST_not_a_real_instantly_key"
+  },
+  "dnsDefault": "ETIMEOUT",
+  "expect": {
+    "mode": "LIVE",
+    "verdicts": {
+      "send-1.outbound-pool.example": "unknown",
+      "send-2.outbound-pool.example": "unknown",
+      "192.0.2.10": "unknown",
+      "198.51.100.20": "unknown"
+    },
+    "actions": {},
+    "httpCalls": 0,
+    "summary": {
+      "unknown": 4,
+      "paused": 0
+    }
+  }
+}

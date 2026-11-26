@@ -1,0 +1,41 @@
+{
+  "name": "primary-domain-alert-only",
+  "description": "A domain marked in PRIMARY_DOMAINS is listed. It raises an alert but is never auto-paused.",
+  "env": {
+    "DRY_RUN": "false",
+    "SANDBOX_MODE": "false",
+    "SMARTLEAD_API_KEY": "zzz_TEST_not_a_real_smartlead_key",
+    "INSTANTLY_API_KEY": "zzz_TEST_not_a_real_instantly_key",
+    "PRIMARY_DOMAINS": "primary-brand.example",
+    "MONITORED_DOMAINS": "primary-brand.example,send-1.outbound-pool.example",
+    "CAMPAIGN_MAP": {
+      "primary-brand.example": {
+        "smartlead": [
+          "zzz_TEST_sl_9001"
+        ]
+      }
+    }
+  },
+  "dns": {
+    "primary-brand.example.dbl.spamhaus.org": [
+      "127.0.1.2"
+    ]
+  },
+  "dnsDefault": "ENOTFOUND",
+  "expect": {
+    "mode": "LIVE",
+    "verdicts": {
+      "primary-brand.example": "listed",
+      "send-1.outbound-pool.example": "clean"
+    },
+    "actions": {},
+    "httpCalls": 0,
+    "noteCodes": [
+      "primary_domain_alert_only"
+    ],
+    "summary": {
+      "listed": 1,
+      "needsAttention": true
+    }
+  }
+}
